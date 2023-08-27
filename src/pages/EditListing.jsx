@@ -73,7 +73,7 @@ export default function CreateListing() {
   }, [navigate,params.listingId]);
 
   useEffect(()=>{
-    if(listing && listing.userRef != auth.currentUser.uid){
+    if(listing && listing.userRef !== auth.currentUser.uid){
         toast.error("You are not eligible to edit this list");
         navigate('/');
     }
