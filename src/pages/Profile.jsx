@@ -1,6 +1,6 @@
 import { getAuth, updateProfile } from 'firebase/auth';
 import { collection, doc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { db } from '../firebase';
@@ -45,25 +45,28 @@ export default function Profile() {
       }
       toast.success("Profile changes were successfully")
     } catch (error) {
-      toast.error("Profile changes were not successfully");
-      
+      toast.error("Profile changes were not successfully"); 
     }
 
   }
   useEffect(()=>{
     async function fetchUserListings(){
       const listingRef = collection(db, 'listings');
-      const q = query(listingRef, where('userRef', '==', auth.currentUser.
-      uid), orderBy('timestamp', 'desc'));
+      const q = query(
+        listingRef, 
+        where('userRef', '==', auth.currentUser.uid),
+        orderBy('timestamp', 'desc')
+      );
       const querySnap = await getDocs(q);
       let listings = [];
       querySnap.forEach((doc)=>{
         return listings.push({
           id: doc.id,
-          data: doc.data()
+          data: doc.data(),
         });
       });
       setListings(listings);
+      console.log(listings);
       setLoading(false);
     }
     fetchUserListings();
@@ -121,7 +124,8 @@ export default function Profile() {
       {!loading && listings.length > 0 && (
         <>
           <h2 className='text-2xl text-center font-semibold '>My Listings</h2>
-          <ul>
+          <ul className='sm:grid sm:grid-cols-2
+          lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6'>
             {listings.map((listing)=>(
               <ListingItem key={listing.id} id={listing.id} 
               listing={listing.data}/>

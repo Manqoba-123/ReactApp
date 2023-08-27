@@ -39,7 +39,6 @@ export default function SignUp() {
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
-      toast.success("Well done you have signed up");
       navigate('/');
     } catch (error) {
       toast.error("Can't register try again please");
