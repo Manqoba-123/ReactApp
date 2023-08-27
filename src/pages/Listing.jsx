@@ -9,12 +9,16 @@ import 'swiper/css/bundle'
 import {AiOutlineShareAlt} from 'react-icons/ai'
 import {SiGooglemaps} from 'react-icons/si'
 import {FaBed, FaBath, FaParking, FaChair} from 'react-icons/fa'
+import {getAuth} from 'firebase/auth'
+import Contact from '../components/Contact';
 
 export default function Listing() {
+    const auth = getAuth();
     const params = useParams();
     const [listing, setListing] = useState(null);
     const [loading, setLoading] = useState(true);
     const [shareLink, setShareLink] = useState(false);
+    const [contactLandLord, setContactLandLord] = useState(false);
 
     useEffect(()=>{
         async function fetchListing(){
@@ -64,7 +68,7 @@ export default function Listing() {
 
        <div className='m-4 flex flex-col md:flex-row max-w-6xl
        lg:mx-auto p-4 rounded-lg shadow-lg bg-white lg:space-x-5'>
-        <div className='w-full h-[200px] lg-[400px]
+        <div className='w-full 
         rounded-lg'>
             <p className='text-2xl font-bold mb-3 text-blue-700
             '>
@@ -97,7 +101,7 @@ export default function Listing() {
                 {listing.description}
             </p>
             <ul className='flex space-x-2 lg:space-x-10 text-sm
-            font-semibold'>
+            font-semibold mb-6'>
                 <li className='flex items-center whitespace-nowrap'>
                     <FaBed className='text-lg mr-1'/>
                     {+listing.bedrooms > 1 ?
@@ -119,6 +123,23 @@ export default function Listing() {
                     'Furnished' : 'Not furnished'}
                 </li>
             </ul>
+            {listing.userRef !== auth.currentUser?.uid
+             && !contactLandLord &&(
+                <div className='mt-6'>
+                <button className='px-7 py-3
+            bg-blue-500 text-white 
+            font-medium rounded-md text-sm uppercase shadow-md
+            hover:bg-blue-800 hover:shadow-lg transition duration-150 ease-in-out
+            w-full text-center'
+            onClick={()=>setContactLandLord(true)}>
+                Contact landlord</button>
+            </div>
+             )}
+             {contactLandLord && (
+                <Contact 
+                userRef={listing.userRef}
+                listing={listing} />
+             )}
         </div>
         <div className='bg-pink-800 w-full h-[200px] lg-[400px]
         rounded-lg z-10 overflow-x-hidden'>Map</div>
