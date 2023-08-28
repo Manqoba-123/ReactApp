@@ -56,7 +56,7 @@ export default function Slider() {
                     <p className='text-[#f1faee] absolute left-1
                     top-3 bg-slate-700 font-medium max-w-[90%] shadow-lg rounded-tr-2xl
                     rounded-bl-2xl text-center text-sm px-2'>{data.name}</p>
-                    <p className='text-[#f1faee] absolute left-
+                    <p className='text-[#f1faee] absolute right-1
                     bottom-1 bg-red-700 font-semibold max-w-[90%] shadow-lg rounded-tr-2xl
                     rounded-bl-2xl text-center text-sm px-2'>
                         R{data.discountedPrice ?? data.regularPrice}
